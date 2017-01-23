@@ -1,0 +1,22 @@
+.navbar{
+    margin-bottom: 0px;
+}
+.progress-bar{
+    transition:         none !important;
+    -webkit-transition: none !important;
+    -moz-transition:    none !important;
+    -o-transition:      none !important;
+}
+.case{
+    border:1px solid transparent;
+    border-radius: 4px;
+    max-width: 1125px;
+    height: 75px;
+    background-image: url('../img/cases.png');
+    position: relative;
+    margin:0px auto;
+}
+
+p {
+    color: #6b9311;
+}

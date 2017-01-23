@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>BOTTOM GAMBLING: CHAT</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font: 13px Helvetica, Arial; }
+        form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
+        form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
+        form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+        #messages { list-style-type: none; margin: 0; padding: 0; }
+        #messages li { padding: 5px 10px; }
+        #messages li:nth-child(odd) { background: #eee; }
+    </style>
+</head>
+<body>
+
+<ul id="messages"></ul>
+<form action="">
+    <input id="m" autocomplete="off" /><button>Send</button>
+</form>
+
+<div class="test1"></div>
+<span class="test2"></span>
+
+<script src="https://code.jquery.com/jquery-3.1.1.js" integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA=" crossorigin="anonymous"></script>
+{{ ws_client() }}
+</body>
+</html>
+
+<script>
+    var message;
+
+
+    var websocket = WS.connect("ws://127.0.0.1:8080");
+    websocket.on("socket/connect", function(session){
+        //session is an Autobahn JS WAMP session.
+        session.subscribe("acme/channel", function(uri, payload) {
+
+            console.log("TEST", payload.msg);
+
+            $('#messages').append("Received message", payload.msg);
+        });
+
+        session.publish("acme/channel", {msg: "This is a message!"});
+
+        $('button').click(function(e) {
+            message = $('#m').val();
+            e.preventDefault();
+            console.log(message);
+            session.publish("acme/channel", {msg: message});
+        });
+
+
+
+        session.publish("acme/channel", {msg: "I won't see this"});
+        console.log("Successfully Connected!");
+    })
+
+    websocket.on("socket/disconnect", function(error){
+        //error provides us with some insight into the disconnection: error.reason and error.code
+
+        console.log("Disconnected for " + error.reason + " with code " + error.code);
+    })
+</script>

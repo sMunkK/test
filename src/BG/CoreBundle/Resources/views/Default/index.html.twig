@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% block header %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{% block title %}BOTTOM GAMBLING{% endblock %}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    {% block stylesheets %}
+        {% stylesheets filter='cssrewrite'
+        'bundles/bgcore/css/roulette.css' %}
+        <link href="{{ asset_url }}" type="text/css" rel="stylesheet" />
+        {% endstylesheets %}
+    {% endblock %}
+
+</head>
+<body>
+    <div class="container col-lg-12">
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <ul class="nav navbar-nav">
+                    <li class="active"> <a href="/">Home</a></li>
+                    <li> <a href="/roulette">Roulette</a> </li>
+                    <li> <a href="/coinflip">Coinflip</a> </li>
+                </ul>
+                <div class="navbar-right inline-form steam">
+                    {% if login  %}
+                        {{ session.nickname }} <img src="{{ session.avatar }}" alt="Avatar" id="avatar">
+                        <a href="/logout">Logout</a>
+                    {% else %}
+                        <a href="">{% include "SteamAuthBundle:Login:login.html.twig" %}</a>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+{% endblock %}
+
+{% block body %}
+
+        {% block roulette %}
+            <div class="col-lg-offset-3 col-lg-6 col-lg-offset-3">
+                <div id="mainpage" style="margin-bottom:170px;" class="">
+                    <div class="alert alert-danger" style="margin-top:15px;">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        <h4>Free Steam keys</h4>
+                        <p><b>Register an account and open <i>Drop key</i>. <a href="/steam-keys">Free Steam keys</a>.</b></p>
+                    </div>
+                    <div class="alert alert-success" style="margin-bottom:5px;margin-top:15px">
+                        <i class="fa fa-exclamation-circle"></i> Join our <b><a href="http://steamcommunity.com/groups/CSGOASDcom" target="_blank">Steam group</a></b> to participate in group only giveaways.
+                        <span class="pull-right">
+                    <i class="fa fa-exclamation-circle"></i> How to get <b><a href="http://steamcommunity.com/groups/CSGOASDcom#announcements/detail/832430836681593921" target="_blank">100,000 playcoins</a></b> for free.
+                  </span>
+                    </div>
+                    <div class="alert alert-info" style="margin-top:5px;margin-bottom:5px;">
+                  <span data-dismiss="alert" style="cursor: pointer;">
+                      <i class="fa fa-exclamation-circle"></i> All promocodes give <b>100</b> coins!
+                  </span>
+                        <span data-dismiss="alert" style="cursor: pointer;" class="pull-right">
+                      <i class="fa fa-exclamation-circle"></i> If you want to help us add <b>"BOTTOMGAMBLING.com"</b> to your <a href="https://steamcommunity.com/id/user/edit" target="_blank">Steam name</a>
+                  </span>
+                    </div>
+
+                    <div class="progress text-center" style="height:50px;margin-bottom:5px;margin-top:5px">
+                        <span id="banner"></span>
+                        <div class="progress-bar progress-bar-danger progress-bar-striped" id="counter"></div>
+                    </div>
+
+
+                    <div class="case" style="margin-bottom: 5px; background-position: -904.5px 0px;"><div id="pointer"></div></div>
+                    <div class="well text-center" style="padding:5px; margin-bottom:5px;"><div id="past"></div></div>
+                    <div class="well text-left" style="padding:10px 15px; margin-bottom:5px;">
+
+                        <div class="form-group" style="margin-bottom:0;">
+                            <div class="input-btn bet-buttons">
+                                <!--<span style="font-size: 13px;background-color: #b04a43; padding: 10px 20px; margin-right: 5px; color: #fff; border-radius: 10px;">
+                                    <span>Balance: </span>
+                                    <span id="dongers"></span>
+                                    <span id="balance">0</span> <i style="cursor:pointer; margin-left: 5px;" class="fa fa-refresh noselect" id="getbal"></i>
+                                </span>-->
+                                <p>
+                                    <span style="font-size:18px;font-weight:bold">Balance: <span id="dongers"></span> <span id="balance">0</span> <i style="cursor:pointer" class="fa fa-refresh noselect" id="getbal"></i></span>
+                                </p>
+                                <div class="form-group">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-danger betshort" data-action="clear">Clear</button>
+                                        <button type="button" class="btn btn-default betshort" data-action="10">+10</button>
+                                        <button type="button" class="btn btn-default betshort" data-action="100">+100</button>
+                                        <button type="button" class="btn btn-default betshort" data-action="1000">+1000</button>
+                                        <button type="button" class="btn btn-default betshort" data-action="half">1/2</button>
+                                        <button type="button" class="btn btn-default betshort" data-action="double">x2</button>
+                                        <button type="button" class="btn btn-primary betshort" data-action="max">Max</button>
+                                    </div>
+                                </div>
+                                <input type="text" class="form-control input-lg" placeholder="Bet amount..." id="betAmount" style="margin-top:15px;" wtx-context="5AD066D5-CC69-424A-8D0C-5A15A787A831">
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row text-center">
+                        <div class="col-xs-4 betBlock" style="padding-right:0px">
+                            <div class="panel panel-default bet-panel" id="panel11-7-b">
+                                <div class="panel-heading" style="padding: 3px;">
+                                    <button class="btn btn-danger btn-lg  btn-block betButton" data-lower="1" data-upper="7">1 - 7</button>
+                                </div>
+                            </div>
+                            <div class="panel panel-default bet-panel" id="panel1-7-m" style="width: 220px; margin: auto; margin-bottom: 10px;">
+                                <div class="panel-body" style="padding:0px">
+                                    <div class="my-row">
+                                        <div class="text-center"><span class="mytotal">0</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default bet-panel" id="panel1-7-t">
+                                <div class="panel-body" style="padding:0px" id="panel1-7">
+                                    <div class="total-row">
+                                        <div class="text-center">Total bet: <span class="total">0</span></div>
+                                    </div>
+                                    <ul class="list-group betlist text-left"></ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-4 betBlock">
+                            <div class="panel panel-default bet-panel" id="panel0-0-b">
+                                <div class="panel-heading" style="padding: 3px;">
+                                    <button class="btn btn-success btn-lg  btn-block betButton" data-lower="0" data-upper="0">0</button>
+                                </div>
+                            </div>
+                            <div class="panel panel-default bet-panel" id="panel0-0-m" style="width: 220px; margin: auto; margin-bottom: 10px;">
+                                <div class="panel-body" style="padding:0px">
+                                    <div class="my-row">
+                                        <div class="text-center"><span class="mytotal">0</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default bet-panel" id="panel0-0-t">
+                                <div class="panel-body" style="padding:0px" id="panel0-0">
+                                    <div class="total-row">
+                                        <div class="text-center">Total bet: <span class="total">0</span></div>
+                                    </div>
+                                    <ul class="list-group betlist text-left"></ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-4 betBlock" style="padding-left:0px">
+                            <div class="panel panel-default bet-panel" id="panel8-14-b">
+                                <div class="panel-heading" style="padding: 3px;">
+                                    <button class="btn btn-inverse btn-lg  btn-block betButton" data-lower="8" data-upper="14">8 - 14</button>
+                                </div>
+                            </div>
+                            <div class="panel panel-default bet-panel" id="panel8-14-m" style="width: 220px; margin: auto; margin-bottom: 10px;">
+                                <div class="panel-body" style="padding:0px">
+                                    <div class="my-row">
+                                        <div class="text-center"><span class="mytotal">0</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default bet-panel" id="panel8-14-t">
+                                <div class="panel-body" style="padding:0px" id="panel8-14">
+                                    <div class="total-row">
+                                        <div class="text-center">Total bet: <span class="total">0</span></div>
+                                    </div>
+                                    <ul class="list-group betlist text-left"></ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12">
+                            <br><br><br><br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    {% endblock %}
+
+    </div>
+{%  endblock %}
+<script src="https://code.jquery.com/jquery-3.1.1.js" integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA=" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-Knob/1.2.13/jquery.knob.min.js"></script>
+
+</body>
+</html>
+

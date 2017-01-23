@@ -1,0 +1,12 @@
+acme_rpc:
+    channel: sample/{method}
+    handler:
+        callback: 'acme.rpc' #related to the getName() or your RPC service
+    requirements:
+        method:
+            pattern: "[a-z_]+" #accept all valid regex, don't put delimiters !
+
+core_topic:
+    channel: acme/channel
+    handler:
+        callback: 'core.topic' #related to the getName() of your topic

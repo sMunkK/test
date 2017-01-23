@@ -1,0 +1,14 @@
+bg_core_homepage:
+    path:     /
+    defaults: { _controller: BGCoreBundle:Core:index }
+
+bg_core_login:
+    path:     /login
+    defaults: { _controller: BGCoreBundle:Core:login }
+
+bg_core_chat:
+    path:     /chat
+    defaults: { _controller: BGCoreBundle:Core:chat }
+
+
+

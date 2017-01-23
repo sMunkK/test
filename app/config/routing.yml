@@ -1,0 +1,14 @@
+bg_core:
+    resource: "@BGCoreBundle/Resources/config/routing.yml"
+    prefix:   /
+
+login_check:
+    path: /login_check
+
+logout:
+    path: /logout
+
+app:
+    resource: "@AppBundle/Controller/"
+    type:     annotation
+
